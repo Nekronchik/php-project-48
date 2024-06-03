@@ -1,0 +1,60 @@
+#!/usr/bin/env php
+<?php
+
+$autoloadPath1 = __DIR__ . '/../../../autoload.php';
+$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($autoloadPath1)) {
+    require_once $autoloadPath1;
+} else {
+    require_once $autoloadPath2;
+}
+
+
+$doc = <<<DOC
+Generate diff
+
+Usage:  
+    gendiff (-h|--help)
+    gendiff (-v|--version)    
+    gendiff [--format <fmt>] <firstFile> <secondFile>
+
+Options:
+    -h --help        Show this screen.
+    -v --version     Show version.    
+    --format <fmt>   Report format [default: stylish]  
+DOC;
+
+$args = Docopt::handle($doc, array('version' => 'gendiff 1.0'));
+$pathToFile1 = $args['<firstFile>'];
+$pathToFile2 = $args['<secondFile>'];
+$diff = genDiff($pathToFile1, $pathToFile2);
+print_r($diff);
+
+/*
+<?php
+$doc = <<<DOC
+Naval Fate.
+
+Usage:
+  naval_fate.php ship new <name>...
+  naval_fate.php ship <name> move <x> <y> [--speed=<kn>]
+  naval_fate.php ship shoot <x> <y>
+  naval_fate.php mine (set|remove) <x> <y> [--moored | --drifting]
+  naval_fate.php (-h | --help)
+  naval_fate.php --version
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+  --speed=<kn>  Speed in knots [default: 10].
+  --moored      Moored (anchored) mine.
+  --drifting    Drifting mine.
+
+DOC;
+
+require('path/to/src/docopt.php');
+$args = Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
+foreach ($args as $k=>$v)
+    echo $k.': '.json_encode($v).PHP_EOL;
+
+*/

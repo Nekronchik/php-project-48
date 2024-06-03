@@ -1,0 +1,13 @@
+{
+    "name": "hexlet/code",
+    "license": "MIP",
+    "authors": [
+        {
+            "name": "gaponov.andrey",
+            "email": "mr.nekron@gmail.com"
+        }
+    ],
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
+}
