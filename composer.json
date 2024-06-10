@@ -1,13 +1,26 @@
 {
     "name": "hexlet/code",
-    "license": "MIP",
+    "description": "Second project on hexlet",
+    "license": "MIT",
     "authors": [
         {
             "name": "gaponov.andrey",
             "email": "mr.nekron@gmail.com"
         }
     ],
+    "bin": [
+        "bin/gendiff"
+    ],
+    "autoload": {
+        "files": [
+            "src/Differ.php",
+            "files/file1.json",
+            "files/file2.json",
+            "src/Differ.php"
+        ]
+    },
     "require": {
-        "docopt/docopt": "^1.0"
+        "docopt/docopt": "^1.0",
+        "funct/funct": "^1.5"
     }
 }
