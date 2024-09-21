@@ -1,0 +1,28 @@
+{
+    "name": "hexlet/code",
+    "description": "Difference Calculator – a program that determines the difference between two data structures",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "src/Differ.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Andrey Gaponov",
+            "email": "mr.nekron@gmail.com"
+        }
+    ],
+    "bin": [
+        "bin/gendiff"
+    ],
+    "require": {
+        "docopt/docopt": "^1.0",
+        "funct/funct": "^1.6",
+        "wp-cli/wp-cli-bundle": "^2.11"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.3"
+    }
+}
