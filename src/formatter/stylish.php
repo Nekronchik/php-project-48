@@ -85,10 +85,16 @@ function getSpace($int, $operand)
         return str_repeat(" ", 4);
     }
     if ($int == 1) {
-        return $operand === '}' ? str_repeat(" ", 8) : "    ";
+        if ($operand == '}') {
+            return str_repeat(" ", 8);
+        }
+        return in_array($operand, $arr) ? '  ' : "    ";
     }
     if ($int == 2) {
-        return $operand === '}' ? str_repeat(" ", 12) : str_repeat(" ", 6);
+        if ($operand == '}') {
+            return str_repeat(" ", 12);
+        }
+        return in_array($operand, $arr) ? str_repeat(" ", 6) : str_repeat(" ", 8);
     }
     if ($int == 3) {
         return in_array($operand, $arr) ? str_repeat(" ", 10) : str_repeat(" ", 12);
@@ -99,7 +105,6 @@ function getSpace($int, $operand)
     if ($int == 5) {
         return in_array($operand, $arr) ? str_repeat(" ", 18) : str_repeat(" ", 20);
     }
-    return "";
 }
 
 function getJsonStr($arrayJson)
