@@ -72,8 +72,8 @@ function buildDiffTree(object $beforeData, object $afterData): array
                 return [
                     'name' => $key,
                     'type' => 'changed',
-                    'oldValue' => $beforeData->$key,
-                    'newValue' => $afterData->$key
+                    'valueBefore' => $beforeData->$key,
+                    'valueAfter' => $afterData->$key
                 ];
             }
             return [
@@ -89,7 +89,7 @@ function buildDiffTree(object $beforeData, object $afterData): array
 
 function sortBy($collection, $comparator, $sortFunction = 'asort')
 {
-    if (!is_callable($comparator)) {
+    if (false === is_callable($comparator)) {
         $comparator = function ($item) use ($comparator) {
             return $item[$comparator];
         };
@@ -108,7 +108,7 @@ function sortBy($collection, $comparator, $sortFunction = 'asort')
 
 function union($firstCollection, $secondCollection)
 {
-    $merged = array_merge($firstCollection, $secondCollection);
+    $merged = call_user_func_array('array_merge', func_get_args());
 
     return array_unique($merged);
 }

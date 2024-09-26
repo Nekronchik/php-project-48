@@ -9,3 +9,15 @@
 
     -Поддержка разных входных форматов: yaml и json
     -Генерация отчета в виде plain text, stylish и json
+
+gendiff before1.json after1.json
+
+[![asciicast](https://asciinema.org/a/vjuq5sNPcSVCiz11Iwglg2iAo.svg)](https://asciinema.org/a/vjuq5sNPcSVCiz11Iwglg2iAo)
+
+gendiff before.yml after.yml
+
+[![asciicast](https://asciinema.org/a/jaJOXSZ4umn0kmHfjkFYawy4O.svg)](https://asciinema.org/a/jaJOXSZ4umn0kmHfjkFYawy4O)
+
+[![asciicast](https://asciinema.org/a/mRjw3596mXgHxusMGRS5q7OlT.svg)](https://asciinema.org/a/mRjw3596mXgHxusMGRS5q7OlT)
+
+[![asciicast](https://asciinema.org/a/aLngDw06lOadapdUPhQVrlduk.svg)](https://asciinema.org/a/aLngDw06lOadapdUPhQVrlduk)
