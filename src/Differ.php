@@ -2,66 +2,113 @@
 
 namespace Differ\Differ;
 
-use function cli\line;
-function parser($pathToBefore, $pathToAfter)
-{
-    $rawBefore = file_get_contents($pathToBefore);
-    $rawAfter = file_get_contents($pathToAfter);
-    $before = json_decode($rawBefore, true);
-    $after = json_decode($rawAfter, true);
+use Docopt;
 
-    return [$before, $after];
-}
+use function Differ\Parsers\parse;
+use function Differ\Formatter\Stylish\formatStylish;
+use function Differ\Formatter\Plain\formatPlain;
+use function Differ\Formatter\Json\formatJson;
 
-function getAdded($before, $after)
+function genDiff($filePathBefore, $filePathAfter, $outputFormat = 'stylish')
 {
-    $added = array_diff_assoc($after, $before);
-    return $added;
-}
-function getRemoved($before, $after)
-{
-    $removed = array_diff_assoc($before, $after);
-    return $removed;
-}
+    $beforeContent = file_get_contents($filePathBefore);
+    $afterContent = file_get_contents($filePathAfter);
 
-function getStill($before, $after)
-{
-    $still = array_intersect_assoc($before, $after);
-    return $still;
-}
-function getKeys($before, $after)
-{
-    $beforeKeys = array_keys($before);
-    $afterKeys = array_keys($after);
-    $keys = array_merge(
-        array_intersect($beforeKeys, $afterKeys),
-        array_diff($beforeKeys, $afterKeys),
-        array_diff($afterKeys, $beforeKeys)
-    );
-    sort($keys);
-    return array_values($keys);
-}
+    $beforeFileType = pathinfo($filePathBefore, PATHINFO_EXTENSION);
+    $afterFileType = pathinfo($filePathAfter, PATHINFO_EXTENSION);
 
-function genDiff($pathToBefore, $pathToAfter)
-{
-    [$before, $after] = parser($pathToBefore, $pathToAfter);
+    $parsedBeforeData = parse($beforeContent, $beforeFileType);
+    $parsedAfterData = parse($afterContent, $afterFileType);
 
-    $added = getAdded($before, $after);
-    $removed = getRemoved($before, $after);
-    $still = getStill($before, $after);
-    $keys = getKeys($before, $after);
+    $diffTree = buildDiffTree($parsedBeforeData, $parsedAfterData);
 
-    print("{\n");
-    foreach ($keys as $key) {
-        if (isset($removed[$key])) {
-            print("    - {$key}: {$removed[$key]}\n");
-        }
-        if (isset($added[$key])) {
-            print("    + {$key}: {$added[$key]}\n");
-        }
-        if (isset($still[$key])) {
-            print("      {$key}: {$still[$key]}\n");
-        }
+    switch ($outputFormat) {
+        case 'plain':
+            return formatPlain($diffTree);
+        case 'json':
+            return formatJson($diffTree);
+        default:
+            return formatStylish($diffTree);
     }
-    print("}\n");
+}
+
+function buildDiffTree(object $beforeData, object $afterData): array
+{
+    $uniqueKeys = union(array_keys(get_object_vars($beforeData)), array_keys(get_object_vars($afterData)));
+
+    $sortedKeys = array_values(
+        sortBy(
+            $uniqueKeys,
+            function ($key) {
+                return $key;
+            }
+        )
+    );
+
+    $diffTree = array_map(
+        function ($key) use ($beforeData, $afterData) {
+            if (!property_exists($afterData, $key)) {
+                return [
+                    'name' => $key,
+                    'type' => 'removed',
+                    'value' => $beforeData->$key
+                ];
+            }
+            if (!property_exists($beforeData, $key)) {
+                return [
+                    'name' => $key,
+                    'type' => 'added',
+                    'value' => $afterData->$key
+                ];
+            }
+            if (is_object($beforeData->$key) && is_object($afterData->$key)) {
+                return [
+                    'name' => $key,
+                    'type' => 'nested',
+                    'children' => buildDiffTree($beforeData->$key, $afterData->$key)
+                ];
+            }
+            if ($beforeData->$key !== $afterData->$key) {
+                return [
+                    'name' => $key,
+                    'type' => 'changed',
+                    'oldValue' => $beforeData->$key,
+                    'newValue' => $afterData->$key
+                ];
+            }
+            return [
+                'name' => $key,
+                'type' => 'unchanged',
+                'value' => $beforeData->$key
+            ];
+        },
+        $sortedKeys
+    );
+    return $diffTree;
+}
+
+function sortBy($collection, $comparator, $sortFunction = 'asort')
+{
+    if (!is_callable($comparator)) {
+        $comparator = function ($item) use ($comparator) {
+            return $item[$comparator];
+        };
+    }
+
+    $values = array_map($comparator, $collection);
+    $sortFunction($values);
+
+    $sortedCollection = [];
+    foreach ($values as $key => $value) {
+        $sortedCollection[$key] = $collection[$key];
+    }
+
+    return $sortedCollection;
+}
+
+function union($firstCollection, $secondCollection)
+{
+    $merged = array_merge($firstCollection, $secondCollection);
+
+    return array_unique($merged);
 }

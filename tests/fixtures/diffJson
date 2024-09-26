@@ -1,0 +1,128 @@
+[
+    {
+        "name": "common",
+        "type": "nested",
+        "children": [
+            {
+                "name": "follow",
+                "type": "added",
+                "oldValue": null,
+                "newValue": false
+            },
+            {
+                "name": "setting1",
+                "type": "notChanged",
+                "oldValue": "Value 1",
+                "newValue": "Value 1"
+            },
+            {
+                "name": "setting2",
+                "type": "removed",
+                "oldValue": 200,
+                "newValue": null
+            },
+            {
+                "name": "setting3",
+                "type": "updated",
+                "oldValue": true,
+                "newValue": {
+                    "key": "value"
+                }
+            },
+            {
+                "name": "setting4",
+                "type": "added",
+                "oldValue": null,
+                "newValue": "blah blah"
+            },
+            {
+                "name": "setting5",
+                "type": "added",
+                "oldValue": null,
+                "newValue": {
+                    "key5": "value5"
+                }
+            },
+            {
+                "name": "setting6",
+                "type": "nested",
+                "children": [
+                    {
+                        "name": "doge",
+                        "type": "nested",
+                        "children": [
+                            {
+                                "name": "wow",
+                                "type": "updated",
+                                "oldValue": "too much",
+                                "newValue": "so much"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "key",
+                        "type": "notChanged",
+                        "oldValue": "value",
+                        "newValue": "value"
+                    },
+                    {
+                        "name": "ops",
+                        "type": "added",
+                        "oldValue": null,
+                        "newValue": "vops"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "group1",
+        "type": "nested",
+        "children": [
+            {
+                "name": "baz",
+                "type": "updated",
+                "oldValue": "bas",
+                "newValue": "bars"
+            },
+            {
+                "name": "foo",
+                "type": "notChanged",
+                "oldValue": "bar",
+                "newValue": "bar"
+            },
+            {
+                "name": "nest",
+                "type": "updated",
+                "oldValue": {
+                    "key": "value"
+                },
+                "newValue": "str"
+            }
+        ]
+    },
+    {
+        "name": "group2",
+        "type": "removed",
+        "oldValue": {
+            "abc": 12345,
+            "deep": {
+                "id": 45
+            }
+        },
+        "newValue": null
+    },
+    {
+        "name": "group3",
+        "type": "added",
+        "oldValue": null,
+        "newValue": {
+            "fee": 100500,
+            "deep": {
+                "id": {
+                    "number": 45
+                }
+            }
+        }
+    }
+]
