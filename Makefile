@@ -1,16 +1,16 @@
 validate:
-	composer validate;
+	composer validate
 install:
-	composer install;
+	composer install
 autoload:
-	composer dump-autoload;
+	composer dump-autoload
 diff:
-	./bin/gendiff;
+	./bin/gendiff
 lint:
-	composer exec --verbose phpcs -- --standard=PSR12 src bin;
+	composer exec --verbose phpcs -- --standard=PSR12 src bin
 test:
-	composer exec --verbose phpunit tests;
+	composer exec --verbose phpunit tests
 update:
-	composer update;
+	composer update
 test-coverage:
-	composer exec --verbose XDEBUG_MODE=coverage phpunit tests -- --coverage-clover build/logs/clover.xml;
+	XDEBUG_MODE=coverage composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
