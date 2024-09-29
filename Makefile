@@ -1,5 +1,7 @@
 validate:
 	composer validate;
+install:
+	composer install;
 autoload:
 	composer dump-autoload;
 diff:
@@ -10,3 +12,5 @@ test:
 	composer exec --verbose phpunit tests;
 update:
 	composer update;
+test-coverage:
+	composer exec --verbose XDEBUG_MODE=coverage phpunit tests -- --coverage-clover build/logs/clover.xml;

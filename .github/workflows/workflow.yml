@@ -1,1 +1,35 @@
+# Name of workflow
+name: PHP CI
 
+# Trigger the workflow on push or pull request
+on:
+  - push
+
+jobs:
+  build:
+
+    # The type of machine to run the job on
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          # Specify the PHP version
+          php-version: '8.3.6'
+      - name: Install
+        run: make install
+      - name: Run linter
+        run: make lint
+      # Publish code coverage on Code Climate
+      # https://github.com/paambaati/codeclimate-action
+      - name: Run test & publish code coverage
+        uses: paambaati/codeclimate-action@v5
+      #   # Add Code Climate secret key
+        env:
+           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+           coverageCommand: make test-coverage
+           coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
+           debug: true
